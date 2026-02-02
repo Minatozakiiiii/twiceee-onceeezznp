@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Game Portal Portfolio</title>
+<style>
+  :root {
+    --bg-color: #f8f5e1;
+    --primary-color: #556b2f;
+    --accent-red: #8b2d2d;
+    --accent-orange: #cc5500;
+    --accent-yellow: #e4b222;
+    --text-color: #333333;
+    --button-bg: #d2caaf;
+    --button-hover-bg: #b8ac7f;
+    --shadow-color: rgba(0,0,0,0.2);
+  }
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-image: url("pixel.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background-color: rgba(241, 231, 198, 0.9);
+    border: 3px solid #a0a067;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px #a0a067;
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  #login h2 {
+    font-family: 'Press Start 2P', cursive, monospace;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+
+  #login input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #a0a067;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    background-color: #f1e7c6;
+    color: var(--text-color);
+  }
+
+  #login button {
+    cursor: pointer;
+    background-color: #f1e7c6;
+    color: #2d2d2d;
+    border: 3px solid #a0a067;
+    border-radius: 10px;
+    padding: 15px 40px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px #a0a067;
+    user-select: none;
+  }
+
+  #login button:hover { transform: translateY(-3px); background-color: #e6d9b0; box-shadow:0 6px #a0a067; }
+  #login button:active { transform: translateY(1px); box-shadow: 0 2px #a0a067; }
+
+  #error {
+    color: var(--accent-red);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    display: none;
+  }
+
+  #main-content { display: none; }
+
+  header { text-align: center; margin-bottom: 40px; }
+
+  header h1 {
+    font-family: 'Press Start 2P', cursive, monospace;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 0 var(--accent-orange);
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 1.2rem;
+    color: var(--accent-red);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .buttons button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #f1e7c6;
+    color: #2d2d2d;
+    border: 3px solid #a0a067;
+    border-radius: 10px;
+    padding: 15px 40px;
+    width: 260px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px #a0a067;
+    user-select: none;
+    position: relative;
+  }
+
+  .buttons button:hover {
+    transform: translateY(-15px) scale(1.1);
+    background-color: #e6d9b0;
+    box-shadow: 0 12px #a0a067, 0 0 15px var(--accent-yellow);
+    animation: levitate 1s ease-in-out infinite;
+  }
+  .buttons button:active { transform: translateY(1px); box-shadow: 0 2px #a0a067; }
+
+  @keyframes levitate {
+    0%, 100% { transform: translateY(-15px) scale(1.1); }
+    50% { transform: translateY(-20px) scale(1.1); }
+  }
+
+  span.icon { font-size: 14px; }
+  .icon { font-size: 1.6rem; filter: drop-shadow(1px 1px 0 var(--accent-red)); transition: filter 0.3s ease; }
+  .buttons button:hover .icon { filter: drop-shadow(2px 2px 2px var(--accent-orange)); animation: sparkle 0.4s ease forwards; }
+
+  @keyframes sparkle {
+    0% { text-shadow: 0 0 0 var(--accent-yellow); }
+    50% { text-shadow: 0 0 10px var(--accent-yellow); }
+    100% { text-shadow: 0 0 0 var(--accent-yellow); }
+  }
+
+  .pixel {
+    position: absolute;
+    width: 4px; height: 4px;
+    opacity: 0.5;
+    animation: floatPixel linear infinite;
+  }
+  @keyframes floatPixel {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+    25% { transform: translateY(-10px) translateX(5px) scale(1.2); opacity: 0.7; }
+    50% { transform: translateY(0) translateX(-5px) scale(1); opacity: 0.5; }
+    75% { transform: translateY(5px) translateX(5px) scale(1.1); opacity: 0.6; }
+    100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+  }
+
+  .cloud {
+    position: absolute;
+    width: 60px; height: 20px;
+    background-color: #d2caaf;
+    border-radius: 10px;
+    opacity: 0.3;
+    animation: driftCloud linear infinite;
+  }
+  @keyframes driftCloud { 0% { transform: translateX(-100px); } 100% { transform: translateX(110vw); } }
+
+  .floating-sprite {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 2px;
+    opacity: 0.6;
+    animation: driftSprite linear infinite;
+  }
+  @keyframes driftSprite {
+    0% { transform: translate(0, 0) rotate(0deg); opacity:0.6; }
+    50% { transform: translate(20px, -15px) rotate(180deg); opacity:1; }
+    100% { transform: translate(0, 0) rotate(360deg); opacity:0.6; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<div id="login">
+  <h2>Enter Credentials</h2>
+  <input type="text" id="username" placeholder="Username" aria-label="Username">
+  <input type="password" id="password" placeholder="Password" aria-label="Password">
+  <button id="login-btn">Login</button>
+  <div id="error">Invalid username or password!</div>
+</div>
+
+<div id="main-content">
+  <header>
+    <h1>Game Portal</h1>
+    <p>Welcome to My Life</p>
+  </header>
+
+  <div class="buttons">
+    <button onclick="window.location.href='family.html'" aria-label="Family Section">
+      <span class="icon">👨‍👩‍👧</span> Family
+    </button>
+    <button onclick="window.location.href='collection.html'" aria-label="Collection Section">
+      <span class="icon">📚</span> Collection
+    </button>
+    <button onclick="window.location.href='personal.html'" aria-label="Personal Section">
+      <span class="icon">🎮</span> Personal
+    </button>
+    <button onclick="window.location.href='education.html'" aria-label="Education Section">
+      <span class="icon">🎓</span> Education
+    </button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const loginBtn = document.getElementById('login-btn');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const errorDiv = document.getElementById('error');
+  const loginDiv = document.getElementById('login');
+  const mainContent = document.getElementById('main-content');
+
+  const correctUsername = 'kinggg';
+  const correctPassword = 'minatozakiiil';
+
+  loginBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    if (username === correctUsername && password === correctPassword) {
+
+      loginDiv.style.display = 'none';
+      mainContent.style.display = 'flex';
+      mainContent.style.flexDirection = 'column';
+      mainContent.style.alignItems = 'center';
+      mainContent.style.opacity = 0;
+      mainContent.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        mainContent.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        mainContent.style.opacity = 1;
+        mainContent.style.transform = 'scale(1)';
+      }, 200);
+
+      const buttons = document.querySelectorAll('.buttons button');
+      buttons.forEach((btn, i) => {
+        btn.style.opacity = 0;
+        btn.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+          btn.style.transition = 'all 0.4s ease-out';
+          btn.style.opacity = 1;
+          btn.style.transform = 'translateY(0)';
+        }, 500 + i * 150);
+      });
+    } else {
+
+      errorDiv.style.display = 'block';
+      setTimeout(() => errorDiv.style.display = 'none', 3000); // Hide after 3 seconds
+    }
+  });
+
+  for (let i = 0; i < 80; i++) {
+    const pixel = document.createElement('div');
+    pixel.className = 'pixel';
+    pixel.style.left = Math.random() * window.innerWidth + 'px';
+    pixel.style.top = Math.random() * window.innerHeight + 'px';
+    pixel.style.animationDuration = (3 + Math.random() * 5) + 's';
+    pixel.style.backgroundColor = ['#556b2f', '#8b2d2d', '#cc5500', '#e4b222'][Math.floor(Math.random() * 4)];
+    document.body.appendChild(pixel);
+  }
+
+  for (let i = 0; i < 6; i++) {
+    const cloud = document.createElement('div');
+    cloud.className = 'cloud';
+    cloud.style.top = Math.random() * window.innerHeight / 2 + 'px';
+    cloud.style.animationDuration = 20 + Math.random() * 20 + 's';
+    cloud.style.width = 40 + Math.random() * 50 + 'px';
+    cloud.style.height = 15 + Math.random() * 15 + 'px';
+    document.body.appendChild(cloud);
+  }
+
+  for (let i = 0; i < 40; i++) {
+    const sprite = document.createElement('div');
+    sprite.className = 'floating-sprite';
+    sprite.style.left = Math.random() * window.innerWidth + 'px';
+    sprite.style.top = Math.random() * window.innerHeight + 'px';
+    sprite.style.animationDuration = (5 + Math.random() * 6) + 's';
+    sprite.style.backgroundColor = ['#556b2f', '#8b2d2d', '#cc5500', '#e4b222'][Math.floor(Math.random() * 4)];
+    document.body.appendChild(sprite);
+  }
+});
+</script>
+</body>
+</html>
